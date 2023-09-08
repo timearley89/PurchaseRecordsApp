@@ -31,17 +31,17 @@
             components = new System.ComponentModel.Container();
             btnAddNewInvItem = new Button();
             dataGridViewInventory = new DataGridView();
-            bindingSourceInventory = new BindingSource(components);
             colItemName = new DataGridViewTextBoxColumn();
             colItemPrice = new DataGridViewTextBoxColumn();
             colItemQuantity = new DataGridViewTextBoxColumn();
+            bindingSourceInventory = new BindingSource(components);
             ((System.ComponentModel.ISupportInitialize)dataGridViewInventory).BeginInit();
             ((System.ComponentModel.ISupportInitialize)bindingSourceInventory).BeginInit();
             SuspendLayout();
             // 
             // btnAddNewInvItem
             // 
-            btnAddNewInvItem.Location = new Point(12, 395);
+            btnAddNewInvItem.Location = new Point(22, 385);
             btnAddNewInvItem.Name = "btnAddNewInvItem";
             btnAddNewInvItem.Size = new Size(157, 43);
             btnAddNewInvItem.TabIndex = 0;
@@ -51,7 +51,10 @@
             // 
             // dataGridViewInventory
             // 
+            dataGridViewInventory.AllowUserToAddRows = false;
             dataGridViewInventory.AllowUserToOrderColumns = true;
+            dataGridViewInventory.AllowUserToResizeColumns = false;
+            dataGridViewInventory.AllowUserToResizeRows = false;
             dataGridViewInventory.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.ColumnHeader;
             dataGridViewInventory.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             dataGridViewInventory.Columns.AddRange(new DataGridViewColumn[] { colItemName, colItemPrice, colItemQuantity });

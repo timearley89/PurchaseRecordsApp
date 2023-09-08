@@ -65,7 +65,7 @@
             // lblItemName
             // 
             lblItemName.AutoSize = true;
-            lblItemName.Location = new Point(21, 47);
+            lblItemName.Location = new Point(21, 37);
             lblItemName.Name = "lblItemName";
             lblItemName.Size = new Size(66, 15);
             lblItemName.TabIndex = 3;
@@ -74,7 +74,7 @@
             // lblItemPrice
             // 
             lblItemPrice.AutoSize = true;
-            lblItemPrice.Location = new Point(21, 119);
+            lblItemPrice.Location = new Point(21, 109);
             lblItemPrice.Name = "lblItemPrice";
             lblItemPrice.Size = new Size(60, 15);
             lblItemPrice.TabIndex = 4;
@@ -83,7 +83,7 @@
             // lblItemQuantity
             // 
             lblItemQuantity.AutoSize = true;
-            lblItemQuantity.Location = new Point(21, 194);
+            lblItemQuantity.Location = new Point(21, 184);
             lblItemQuantity.Name = "lblItemQuantity";
             lblItemQuantity.Size = new Size(80, 15);
             lblItemQuantity.TabIndex = 5;

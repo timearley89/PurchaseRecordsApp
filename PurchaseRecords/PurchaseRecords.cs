@@ -6,10 +6,11 @@ using System;
 
 namespace PurchaseRecords
 {
+
     public class DataStore
     {
-        CustomerRecord[] customerRecords;
-        List<InventoryItem> Inventory;
+        public CustomerRecord[] customerRecords { get; set; }
+        public List<InventoryItem> Inventory { get; set; }
         public void AddInventoryItem(Item newitem, int quantity)
         {
             for (int i = 0; i < this.Inventory.Count; i++)
@@ -138,10 +139,12 @@ namespace PurchaseRecords
             return -1; //not found
         }
     }
+
     public class CustomerRecord : IEquatable<object>
     {
-        Purchase[] purchases;
-        CreditCard[] creditCards;
+        
+        public Purchase[] purchases { get; set; }
+        public CreditCard[] creditCards { get; set; }
         public string Name { get; set; }
         public CustomerRecord(string Name)
         {
@@ -224,6 +227,7 @@ namespace PurchaseRecords
             return true;
         }
     }
+
     public struct Purchase : IEquatable<object>
     {
         public Item PurchaseItem { get; set; }
@@ -267,13 +271,14 @@ namespace PurchaseRecords
             return hash;
         }
     }
-    public readonly struct CreditCard : IEquatable<object>
+
+    public struct CreditCard : IEquatable<object>
     {
-        public readonly string CardholderName { get; }
-        public readonly long CardNumber { get; }
-        public readonly int SecurityCode { get; }
-        public readonly int ZipCode { get; }
-        public readonly DateOnly Expiration { get; }
+        public string CardholderName { get; set; }
+        public long CardNumber { get; set; }
+        public int SecurityCode { get; set; }
+        public int ZipCode { get; set; }
+        public DateOnly Expiration { get; set; }
         public CreditCard(string CardholderName, long CardNumber, int SecurityCode, int ZipCode, DateOnly Expiration)
         { //Add verification logic for each field
             this.CardNumber = CardNumber;
@@ -319,6 +324,7 @@ namespace PurchaseRecords
             return hashcode;
         }
     }
+
     public struct Item : IEquatable<object>
     {
         public string Name { get; set; }
@@ -368,6 +374,7 @@ namespace PurchaseRecords
             return;
         }
     }
+
     public struct InventoryItem : IEquatable<object>
     {
         public Item StockItem { get; set; }
