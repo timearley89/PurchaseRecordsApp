@@ -63,6 +63,8 @@
             dataGridViewInventory.RowTemplate.Height = 25;
             dataGridViewInventory.Size = new Size(358, 343);
             dataGridViewInventory.TabIndex = 1;
+            dataGridViewInventory.CellContentClick += dataGridViewInventory_CellContentClick;
+            dataGridViewInventory.CellDoubleClick += dataGridViewInventory_CellDoubleClick;
             // 
             // colItemName
             // 

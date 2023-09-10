@@ -2,13 +2,14 @@
 using System.Runtime.CompilerServices;
 using System.Linq;
 using System;
-
+using System.Text.Json;
 
 namespace PurchaseRecords
 {
 
     public class DataStore
     {
+        
         public CustomerRecord[] customerRecords { get; set; }
         public List<InventoryItem> Inventory { get; set; }
         public void AddInventoryItem(Item newitem, int quantity)

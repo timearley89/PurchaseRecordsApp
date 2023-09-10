@@ -15,6 +15,14 @@ using System.Xml.Serialization;
 
 namespace PurchaseRecords
 {
+    /*
+     * Need to add:
+     * -Delete Items
+     * -Check when adding item for existing item of same name (if found, update price and quantity)
+     * -Update item sorting as already set after adding new item
+     * -Add more InventoryItem properties, like Barcode#, ItemID, Brand(enum?), ItemType, etc
+     * -Build a purchasing system to integrate customerrecords(probably need to change main form to a new one and use 'PointOfSale' as inventory manager)
+     */
     public partial class PointOfSale : Form
     {
         static void Main()
@@ -33,10 +41,10 @@ namespace PurchaseRecords
         private void PointOfSale_Load(object sender, EventArgs e)
         {
             this.Retail = ReadFromFile(defaultFilePath);
-            
+
             PointOfSale_UpdateInventoryDisplay(sender, e);
             //great spot to deserialize retail from disk for autoload...
-            
+
         }
         private void PointOfSale_Closed(object sender, EventArgs e)
         {
@@ -53,12 +61,12 @@ namespace PurchaseRecords
                 //using Json works, but requires that everything be a public property, so no fields, and no partial protection or private properties.
                 //Need to write a custom serialization method and deserialization method that doesn't have this limitation, especially if
                 //we're going to store CC data for customers.
-                
+
                 FileStream fStream = new FileStream(filePath, FileMode.OpenOrCreate, FileAccess.ReadWrite);
-                
-                
+
+
                 JsonSerializer.Serialize(fStream, dataStore, JsonSerializerOptions.Default);
-                
+
                 fStream.Close();
                 return true;
             }
@@ -67,7 +75,7 @@ namespace PurchaseRecords
                 MessageBox.Show("Error Saving File: " + ex.Message);
                 return false;
             }
-            
+
         }
         private DataStore ReadFromFile(string filePath)
         {
@@ -76,7 +84,7 @@ namespace PurchaseRecords
                 //create new datastore, populate it with deserialized data, close filestream, return datastore
                 FileStream fStream = new FileStream(filePath, FileMode.Open, FileAccess.Read);
                 DataStore? tempstore = (DataStore?)JsonSerializer.Deserialize(fStream, typeof(DataStore), JsonSerializerOptions.Default);
-                
+
                 fStream.Close();
                 return tempstore == null ? new DataStore() : (DataStore)tempstore;
             }
@@ -109,11 +117,26 @@ namespace PurchaseRecords
                 InventoryItem newItem = addItemForm.invItem;
                 this.Retail.AddInventoryItem(newItem.StockItem, newItem.Quantity);
             }
-            //dataGridViewInventory.AutoGenerateColumns = false;
-            //dataGridViewInventory.DataSource = bindingSourceInventory;
-            //bindingSourceInventory.ResetBindings(false);
+
             PointOfSale_UpdateInventoryDisplay(sender, e);
             addItemForm.Dispose();
+        }
+
+        private void dataGridViewInventory_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+
+        }
+        private void dataGridViewInventory_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
+        {
+            //if quantity is doubleclicked, open a quantity update form.
+            if (dataGridViewInventory.Columns[e.ColumnIndex].HeaderText == "Quantity")
+            {
+                InventoryItem itemToEdit = this.Retail.Inventory[e.RowIndex];
+                QuantityUpdateForm qtyForm = new QuantityUpdateForm(itemToEdit);
+                DialogResult editResult = qtyForm.ShowDialog();
+                if (editResult == DialogResult.OK && qtyForm.myItem != null) { this.Retail.Inventory[e.RowIndex] = (InventoryItem)qtyForm.myItem; }
+                PointOfSale_UpdateInventoryDisplay(sender, e);
+            }
         }
     }
 }
