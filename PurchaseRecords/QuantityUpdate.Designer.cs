@@ -41,7 +41,7 @@
             btnSubmit.Location = new Point(12, 75);
             btnSubmit.Name = "btnSubmit";
             btnSubmit.Size = new Size(110, 33);
-            btnSubmit.TabIndex = 0;
+            btnSubmit.TabIndex = 1;
             btnSubmit.Text = "Submit";
             btnSubmit.UseVisualStyleBackColor = true;
             btnSubmit.Click += btnSubmit_Click;
@@ -51,7 +51,7 @@
             btnCancel.Location = new Point(137, 75);
             btnCancel.Name = "btnCancel";
             btnCancel.Size = new Size(110, 33);
-            btnCancel.TabIndex = 1;
+            btnCancel.TabIndex = 2;
             btnCancel.Text = "Cancel";
             btnCancel.UseVisualStyleBackColor = true;
             btnCancel.Click += btnCancel_Click;
@@ -62,7 +62,7 @@
             lblItemName.Location = new Point(12, 9);
             lblItemName.Name = "lblItemName";
             lblItemName.Size = new Size(72, 15);
-            lblItemName.TabIndex = 2;
+            lblItemName.TabIndex = 4;
             lblItemName.Text = "Item Name: ";
             // 
             // lblItemNameDisplay
@@ -80,7 +80,7 @@
             lblQty.Location = new Point(12, 39);
             lblQty.Name = "lblQty";
             lblQty.Size = new Size(56, 15);
-            lblQty.TabIndex = 4;
+            lblQty.TabIndex = 5;
             lblQty.Text = "Quantity:";
             // 
             // txtQuantity
@@ -88,7 +88,7 @@
             txtQuantity.Location = new Point(109, 36);
             txtQuantity.Name = "txtQuantity";
             txtQuantity.Size = new Size(138, 23);
-            txtQuantity.TabIndex = 5;
+            txtQuantity.TabIndex = 0;
             txtQuantity.TextChanged += txtQuantity_TextChanged;
             // 
             // QuantityUpdateForm

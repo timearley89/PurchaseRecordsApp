@@ -398,7 +398,7 @@ namespace PurchaseRecords
             int hash = 0;
             hash = this.StockItem.GetHashCode();
             hash ^= this.Price.GetHashCode();
-            return hash;
+            return hash; //left quantity out of this. Evaluating equality based on quantity would defeat the purpose of the struct.
         }
         public InventoryItem(Item item, int quantity = 1)
         {

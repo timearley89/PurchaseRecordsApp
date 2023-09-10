@@ -65,6 +65,8 @@
             dataGridViewInventory.TabIndex = 1;
             dataGridViewInventory.CellContentClick += dataGridViewInventory_CellContentClick;
             dataGridViewInventory.CellDoubleClick += dataGridViewInventory_CellDoubleClick;
+            dataGridViewInventory.UserDeletedRow += dataGridViewInventory_RowDeleting;
+            //dataGridViewInventory.UserDeletingRow += dataGridViewInventory_RowDeleting;
             // 
             // colItemName
             // 

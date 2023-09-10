@@ -54,6 +54,7 @@ namespace PurchaseRecords
         }
         private bool WriteToFile(string filePath, DataStore dataStore)
         {
+            FileStream fStream = new FileStream(filePath, FileMode.Create, FileAccess.ReadWrite);
             try
             {
                 //read through datastore and serialize, write to file, close filestream, return
@@ -62,7 +63,7 @@ namespace PurchaseRecords
                 //Need to write a custom serialization method and deserialization method that doesn't have this limitation, especially if
                 //we're going to store CC data for customers.
 
-                FileStream fStream = new FileStream(filePath, FileMode.OpenOrCreate, FileAccess.ReadWrite);
+
 
 
                 JsonSerializer.Serialize(fStream, dataStore, JsonSerializerOptions.Default);
@@ -73,16 +74,18 @@ namespace PurchaseRecords
             catch (Exception ex)
             {
                 MessageBox.Show("Error Saving File: " + ex.Message);
+                fStream.Close();
                 return false;
             }
 
         }
         private DataStore ReadFromFile(string filePath)
         {
+            FileStream fStream = new FileStream(filePath, FileMode.Open, FileAccess.Read);
             try
             {
                 //create new datastore, populate it with deserialized data, close filestream, return datastore
-                FileStream fStream = new FileStream(filePath, FileMode.Open, FileAccess.Read);
+
                 DataStore? tempstore = (DataStore?)JsonSerializer.Deserialize(fStream, typeof(DataStore), JsonSerializerOptions.Default);
 
                 fStream.Close();
@@ -91,6 +94,7 @@ namespace PurchaseRecords
             catch (Exception ex)
             {
                 MessageBox.Show("Error Opening File: " + ex.Message);
+                fStream.Close();
                 return new DataStore();
             }
         }
@@ -115,7 +119,20 @@ namespace PurchaseRecords
             if (addResult == DialogResult.OK)
             {
                 InventoryItem newItem = addItemForm.invItem;
-                this.Retail.AddInventoryItem(newItem.StockItem, newItem.Quantity);
+                bool itemFound = false; //check through inventory for an item matching the same name. If found, update price and quantity. If not, add new item.
+                for (int i = 0; i < this.Retail.Inventory.Count; i++)
+                {
+                    if (this.Retail.Inventory[i].StockItemName == newItem.StockItemName)
+                    {
+                        this.Retail.Inventory[i] = newItem;
+                        itemFound = true;
+                        break;
+                    }
+                }
+                if (!itemFound)
+                {
+                    this.Retail.AddInventoryItem(newItem.StockItem, newItem.Quantity);
+                }
             }
 
             PointOfSale_UpdateInventoryDisplay(sender, e);
@@ -131,12 +148,44 @@ namespace PurchaseRecords
             //if quantity is doubleclicked, open a quantity update form.
             if (dataGridViewInventory.Columns[e.ColumnIndex].HeaderText == "Quantity")
             {
-                InventoryItem itemToEdit = this.Retail.Inventory[e.RowIndex];
+                string? itemName = dataGridViewInventory.Rows[e.RowIndex].Cells[0].Value.ToString();
+                if (itemName != null) { MessageBox.Show("Null cell value from dblclick method"); PointOfSale_UpdateInventoryDisplay(sender, e); return; }
+                int itemIndex = -1;
+                for (int i = 0; i < this.Retail.Inventory.Count; i++)
+                {
+                    if (this.Retail.Inventory[i].StockItemName == itemName)
+                    {
+                        itemIndex = i;
+                        break;
+                    }
+                }
+                InventoryItem itemToEdit = this.Retail.Inventory[itemIndex];
                 QuantityUpdateForm qtyForm = new QuantityUpdateForm(itemToEdit);
                 DialogResult editResult = qtyForm.ShowDialog();
                 if (editResult == DialogResult.OK && qtyForm.myItem != null) { this.Retail.Inventory[e.RowIndex] = (InventoryItem)qtyForm.myItem; }
                 PointOfSale_UpdateInventoryDisplay(sender, e);
             }
         }
+        private void dataGridViewInventory_RowDeleting(object sender, DataGridViewRowEventArgs e)
+        {
+            string? itemName = e.Row.Cells[0].Value.ToString();
+            if (itemName == null) { MessageBox.Show("Null value from cell in deletion method"); PointOfSale_UpdateInventoryDisplay(sender, e); return; }
+            int itemIndex = -1;
+            for (int i = 0; i < this.Retail.Inventory.Count; i++)
+            {
+                if (this.Retail.Inventory[i].StockItemName == itemName)
+                {
+                    itemIndex = i;
+                    break;
+                }
+            }
+            if (itemIndex >= 0 && itemIndex < this.Retail.Inventory.Count)
+            {
+                this.Retail.Inventory.RemoveAt(itemIndex);
+            }
+            PointOfSale_UpdateInventoryDisplay(sender, e);
+        }
+
+        
     }
 }
